@@ -1,0 +1,772 @@
+#main.py
+from threading import Timer
+from City import City
+from Route import Route
+from Transport import Transport
+from Transport import Airplane
+from Transport import Train
+from Transport import Car
+from tkinter import *
+import tkinter as tk
+from Transagency import transagency
+
+okno = Tk()
+okno.geometry('1680x700')
+
+okno.title("Транспортное агентство")
+okno["bg"] = "pink3"
+
+c = Canvas(okno, width=1600, height=460, bg='pink2')
+c.place(x = 20,y = 95)
+
+c.create_line(0, 3, 1600, 3, width=3)
+c.create_line(0, 459, 1600, 459, width=3)
+c.create_line(3, 0, 3, 1600, width=3)
+
+c.create_line(330, 0, 330, 500, width=3)
+c.create_line(490, 0, 490, 500, width=3)
+c.create_line(640, 0, 640, 500, width=3)
+c.create_line(790, 0, 790, 500, width=3)
+c.create_line(940, 0, 940, 500, width=3)
+c.create_line(1090, 0, 1090, 500, width=3)
+c.create_line(1240, 0, 1240, 500, width=3)
+c.create_line(1390, 0, 1390, 500, width=3)
+c.create_line(1600, 0, 1600, 500, width=3)
+
+c.create_line(3, 4, 330, 72, width=3)
+c.create_line(0, 73, 1600, 73, width=3)
+c.create_line(0, 143, 1600, 143, width=3)
+c.create_line(0, 213, 1600, 213, width=3)
+c.create_line(0, 283, 1600, 283, width=3)
+c.create_line(0, 353, 1600, 353, width=3)
+c.create_line(0, 143, 1600, 143, width=3)
+
+# Заголовки первого столбца
+label = Label(okno,text = " Доход транспортного \n агентства " ,background='pink2',font=("Times New Roman", 14))
+label.place(x = 70,y = 180)
+label = Label(okno,text = " Среднее время доставки \n груза " ,background='pink2',font=("Times New Roman", 14))
+label.place(x = 50,y = 250)
+label = Label(okno,text = " Потери, связанные с \n плохой погодой " ,background='pink2',font=("Times New Roman", 14))
+label.place(x = 75,y = 320)
+label = Label(okno,text = " Потери, связанные с \n аварийностью " ,background='pink2',font=("Times New Roman", 14))
+label.place(x = 75,y = 390)
+label = Label(okno,text = " Доход тонно-километрa \n скоростных \n магистралей / обычных дорог " ,background='pink2',font=("Times New Roman", 14))
+label.place(x = 30,y = 460)
+
+# Заголовки первой строки
+label = Label(okno,text = " Самолёт " ,background='pink2',font=("Times New Roman", 14))
+label.place(x = 385,y = 120)
+label = Label(okno,text = " Поезд " ,background='pink2',font=("Times New Roman", 14))
+label.place(x = 550,y = 120)
+label = Label(okno,text = " Автомобиль " ,background='pink2',font=("Times New Roman", 14))
+label.place(x = 675,y = 120)
+label = Label(okno,text = " Москва " ,background='pink2',font=("Times New Roman", 14))
+label.place(x = 840,y = 120)
+label = Label(okno,text = " Новосибирск" ,background='pink2',font=("Times New Roman", 14))
+label.place(x = 970,y = 120)
+label = Label(okno,text = " Барнаул " ,background='pink2',font=("Times New Roman", 14))
+label.place(x = 1140,y = 120)
+label = Label(okno,text = " Заринск " ,background='pink2',font=("Times New Roman", 14))
+label.place(x = 1290,y = 120)
+label = Label(okno,text = " Общее \n (среднее) " ,background='pink2',font=("Times New Roman", 14))
+label.place(x = 1460,y = 105)
+
+# Доход транспортного агентства
+label1 = Label(okno,text = " 0 " ,background='pink2',font=("Times New Roman", 14) )
+label1.place(x = 420,y = 190)
+label2 = Label(okno,text = " 0 " ,background='pink2',font=("Times New Roman", 14) )
+label2.place(x = 570,y = 190)
+label3 = Label(okno,text = " 0 " ,background='pink2',font=("Times New Roman", 14) )
+label3.place(x = 720,y = 190)
+label4 = Label(okno,text = " 0 " ,background='pink2',font=("Times New Roman", 14) )
+label4.place(x = 870,y = 190)
+label5 = Label(okno,text = " 0 " ,background='pink2',font=("Times New Roman", 14) )
+label5.place(x = 1020,y = 190)
+label6 = Label(okno,text = " 0 " ,background='pink2',font=("Times New Roman", 14) )
+label6.place(x = 1170,y = 190)
+label7 = Label(okno,text = " 0 " ,background='pink2',font=("Times New Roman", 14) )
+label7.place(x = 1320,y = 190)
+label8 = Label(okno,text = " 0 " ,background='pink2',font=("Times New Roman", 14) )
+label8.place(x = 1500,y = 190)
+
+# Среднее время доставки груза
+label11 = Label(okno,text = " 0  ч." ,background='pink2',font=("Times New Roman", 14) )
+label11.place(x = 420,y = 260)
+label22 = Label(okno,text = " 0  ч." ,background='pink2',font=("Times New Roman", 14) )
+label22.place(x = 570,y = 260)
+label33 = Label(okno,text = " 0  ч." ,background='pink2',font=("Times New Roman", 14) )
+label33.place(x = 720,y = 260)
+label44 = Label(okno,text = " 0  ч." ,background='pink2',font=("Times New Roman", 14) )
+label44.place(x = 870,y = 260)
+label55 = Label(okno,text = " 0  ч." ,background='pink2',font=("Times New Roman", 14) )
+label55.place(x = 1020,y = 260)
+label66 = Label(okno,text = " 0  ч." ,background='pink2',font=("Times New Roman", 14) )
+label66.place(x = 1170,y = 260)
+label77 = Label(okno,text = " 0  ч." ,background='pink2',font=("Times New Roman", 14) )
+label77.place(x = 1320,y = 260)
+label88 = Label(okno,text = " 0  ч." ,background='pink2',font=("Times New Roman", 14) )
+label88.place(x = 1500,y = 260)
+
+# Потери из-за погоды
+label111 = Label(okno,text = " 0 р." ,background='pink2',font=("Times New Roman", 14) )
+label111.place(x = 420,y = 330)
+label222 = Label(okno,text = " - " ,background='pink2',font=("Times New Roman", 14) )
+label222.place(x = 570,y = 330)
+label333 = Label(okno,text = " - " ,background='pink2',font=("Times New Roman", 14) )
+label333.place(x = 720,y = 330)
+label444 = Label(okno,text = " - " ,background='pink2',font=("Times New Roman", 14) )
+label444.place(x = 870,y = 330)
+label555 = Label(okno,text = " - " ,background='pink2',font=("Times New Roman", 14) )
+label555.place(x = 1020,y = 330)
+label666 = Label(okno,text = " - " ,background='pink2',font=("Times New Roman", 14) )
+label666.place(x = 1170,y = 330)
+label777 = Label(okno,text = " - " ,background='pink2',font=("Times New Roman", 14) )
+label777.place(x = 1320,y = 330)
+label888 = Label(okno,text = " 0 р." ,background='pink2',font=("Times New Roman", 14) )
+label888.place(x = 1500,y = 330)
+
+# Потери из-за аварий
+label11 = Label(okno,text = " 0 " ,background='pink2',font=("Times New Roman", 14) )
+label11.place(x = 420,y = 400)
+label12 = Label(okno,text = " 0 " ,background='pink2',font=("Times New Roman", 14) )
+label12.place(x = 570,y = 400)
+label13 = Label(okno,text = " 0 " ,background='pink2',font=("Times New Roman", 14) )
+label13.place(x = 720,y = 400)
+label14 = Label(okno,text = " 0 " ,background='pink2',font=("Times New Roman", 14) )
+label14.place(x = 870,y = 400)
+label15 = Label(okno,text = " 0 " ,background='pink2',font=("Times New Roman", 14) )
+label15.place(x = 1020,y = 400)
+label16 = Label(okno,text = " 0 " ,background='pink2',font=("Times New Roman", 14) )
+label16.place(x = 1170,y = 400)
+label17 = Label(okno,text = " 0 " ,background='pink2',font=("Times New Roman", 14) )
+label17.place(x = 1320,y = 400)
+label18 = Label(okno,text = " 0 " ,background='pink2',font=("Times New Roman", 14) )
+label18.place(x = 1500,y = 400)
+
+# Доход тонно-километра скоростных магистралях / обычных дорог
+label1111 = Label(okno,text = " - " ,background='pink2',font=("Times New Roman", 14) )
+label1111.place(x = 420,y = 490)
+label2222 = Label(okno,text = " - " ,background='pink2',font=("Times New Roman", 14) )
+label2222.place(x = 570,y = 490)
+label3333 = Label(okno,text = " - " ,background='pink2',font=("Times New Roman", 14) )
+label3333.place(x = 720,y = 490)
+label4444 = Label(okno,text = " - " ,background='pink2',font=("Times New Roman", 14) )
+label4444.place(x = 870,y = 490)
+label5555 = Label(okno,text = " - " ,background='pink2',font=("Times New Roman", 14) )
+label5555.place(x = 1020,y = 490)
+label6666 = Label(okno,text = " - " ,background='pink2',font=("Times New Roman", 14) )
+label6666.place(x = 1170,y = 490)
+label7777 = Label(okno,text = " - " ,background='pink2',font=("Times New Roman", 14) )
+label7777.place(x = 1320,y = 490)
+label8888 = Label(okno,text = " 0 р. \n - \n 0 р. " ,background='pink2',font=("Times New Roman", 14) )
+label8888.place(x = 1500,y = 460)
+
+
+def new_znacheniya():
+    # Доход транспортного агентства (новое)
+    label1.configure(text=f"+ {int(transagency.income[0]) } р.",foreground= 'green')
+    label1.place(x=380, y=190)
+    label2.configure(text=f"+ {int(transagency.income[1])} р.", foreground='green')
+    label2.place(x=530, y=190)
+    label3.configure(text=f"+ {int(transagency.income[2])} р.", foreground='green')
+    label3.place(x=690, y=190)
+    label4.configure(text=f"+ {int(transagency.income[3])} р.", foreground='green')
+    label4.place(x=840, y=190)
+    label5.configure(text=f"+ {int(transagency.income[4])} р.", foreground='green')
+    label5.place(x=990, y=190)
+    label6.configure(text=f"+ {int(transagency.income[5])} р.", foreground='green')
+    label6.place(x=1130, y=190)
+    label7.configure(text=f"+ {int(transagency.income[6])} р.", foreground='green')
+    label7.place(x=1290, y=190)
+    label8.configure(text=f"+ {int(transagency.total_income)} руб.",foreground= 'green')
+    label8.place(x = 1440,y = 190)
+
+    # Среднее время доставки груза (новое)
+    label11.configure(text=f"{transagency.time_to_execute[0]} ч.")
+    label11.place(x=420, y=260)
+    label22.configure(text=f"{transagency.time_to_execute[1]} ч.")
+    label22.place(x=570, y=260)
+    label33.configure(text=f"{transagency.time_to_execute[2]} ч.")
+    label33.place(x=720, y=260)
+    label44.configure(text=f"{transagency.time_to_execute[3]} ч.")
+    label44.place(x=870, y=260)
+    label55.configure(text=f"{transagency.time_to_execute[4]} ч.")
+    label55.place(x=1020, y=260)
+    label66.configure(text=f"{transagency.time_to_execute[5]} ч.")
+    label66.place(x=1170, y=260)
+    label77.configure(text=f"{transagency.time_to_execute[6]} ч.")
+    label77.place(x=1320, y=260)
+    label88.configure(text=f"{transagency.total_time_to_execute} ч.")
+    label88.place(x=1500, y=260)
+
+    # Потери из-за погоды (новое)
+    label888.configure(text=f"- {int(transagency.total_weather_losses)} р.", foreground='red')
+    label888.place(x=380, y=330)
+    label111.configure(text=f"- {int(transagency.total_weather_losses)} р.", foreground='red')
+    label111.place(x=1480, y=330)
+
+    # Потери из-за аварий (новое)
+    label11.configure(text=f"- {int(transagency.crashes_lost[0]) } р.",foreground= 'red', background='pink2')
+    label11.place(x=390, y=400)
+    label12.configure(text=f"- {transagency.crashes_lost[1] } р.",foreground= 'red', background='pink2')
+    label12.place(x=540, y=400)
+    label13.configure(text=f"- {transagency.crashes_lost[2] } р.",foreground= 'red', background='pink2')
+    label13.place(x=690, y=400)
+    label14.configure(text=f"- {transagency.crashes_lost[3] } р.",foreground= 'red', background='pink2')
+    label14.place(x=830, y=400)
+    label15.configure(text=f"- {transagency.crashes_lost[4] } р.",foreground= 'red', background='pink2')
+    label15.place(x=990, y=400)
+    label16.configure(text=f"- {transagency.crashes_lost[5] } р.",foreground= 'red', background='pink2')
+    label16.place(x=1130, y=400)
+    label17.configure(text=f"- {transagency.crashes_lost[6] } р.",foreground= 'red', background='pink2')
+    label17.place(x=1290, y=400)
+    label18.configure(text=f"- {int(transagency.total_crashes_lost) } р.",foreground= 'red', background='pink2')
+    label18.place(x=1480, y=400)
+
+    # Доход тонно-километра скоростных магистралях / обычных дорог (новое)
+    label8888.configure(text=f"+ {int(transagency.highway_income)} р. \n - \n+ {int(transagency.road_income)} р. ",foreground= 'green')
+    label8888.place(x = 1440,y = 460)
+
+
+def go():
+    if mode == True:
+        transagency.generate_orders()
+        transagency.find_transport_vehicle()
+        transagency.process_orders()
+        transagency.removing_orders()
+        new_znacheniya()
+        Timer(2, go).start()
+
+
+mxstate = 0
+def Button_Start():
+    global mode, mxstate
+    mode = True
+    if mxstate == 0:
+        go()
+        button.configure(text="Пауза")
+        mxstate = 1
+        return
+
+    if mxstate == 1:
+        mode = False
+        button.configure(text="Продолжить")
+    else:
+        go()
+        button.configure(text="Пауза")
+    mxstate = 3 - mxstate
+
+button = Button(okno, text="Начать",height = 2,width = 12,command = Button_Start)
+button.place(x = 20,y = 20)
+okno.mainloop()
+
+
+#Transport.py
+# Класс "Транспорт"
+class Transport:
+    def __init__(self, speed, tonno_kilometer, accident_probability):
+        self.__speed = speed                                   # Скорость транспорта
+        self.__tonno_kilometer = tonno_kilometer               # Доход на тонно-километр скоростных магистралей
+        self.__accident_probability = accident_probability     # Вероятность аварии
+
+    @property
+    def speed(self):
+        return self.__speed
+
+    @property
+    def tonno_kilometer(self):
+        return self.__tonno_kilometer
+
+    @property
+    def accident_probability(self):
+        return self.__accident_probability
+
+class Airplane(Transport):
+    def __init__(self, transport_type, speed, tonno_kilometer, accident_probability):
+        super().__init__(speed, tonno_kilometer, accident_probability)
+        self.__transport_type = transport_type
+
+    @property
+    def transport_type(self):
+        return self.__transport_type
+
+class Train(Transport):
+    def __init__(self, transport_type, speed, tonno_kilometer, accident_probability):
+        super().__init__(speed, tonno_kilometer, accident_probability)
+        self.__transport_type = transport_type
+
+    @property
+    def transport_type(self):
+        return self.__transport_type
+
+class Car(Transport):
+    def __init__(self, transport_type, speed, tonno_kilometer, accident_probability):
+        super().__init__(speed, tonno_kilometer, accident_probability)
+        self.__transport_type = transport_type
+
+    @property
+    def transport_type(self):
+        return self.__transport_type
+
+#City.py
+from random import choices
+
+# Класс "Города"
+class City:
+    def __init__(self, name, size):
+        self.__name = name           # Название города
+        self.__size = size           # Размер города
+        self.__weather = None        # Погода в городе
+
+    @property
+    def name(self):
+        return self.__name
+
+    @property
+    def size(self):
+        return self.__size
+
+    @property
+    def weather(self):
+        self.__weather = choices(("хорошая","плохая"),(0.8 ,0.2))
+        return self.__weather
+#Order.py
+# Класс "Заказы"
+class Order:
+    def __init__(self, id, start_city, end_city, weight, price, priority):
+        self.__id = id                              # ID города
+        self.__start_city = start_city              # Начальный город
+        self.__end_city = end_city                  # Конечный город
+        self.__route = None                         # Маршрут города
+        self.__weight = weight                      # Вес заказа
+        self.__price = price                        # Цена заказа
+        self.__priority = priority                  # Приоритет
+        self.__transport_type = None                # Вид транспорта
+        self.delivery_time = None                   # Время доставки
+        self.__status = "В обработкке"              # Статус доставки
+
+    @property
+    def id(self):
+        return self.__id
+
+    @property
+    def start_city(self):
+        return self.__start_city
+
+    @property
+    def end_city(self):
+        return self.__end_city
+
+    @property
+    def route(self):
+        return self.__route
+
+    @route.setter
+    def route(self, addroute):
+        self.__route = addroute
+
+    @property
+    def weight(self):
+        return self.__weight
+
+    @property
+    def price(self):
+        return self.__price
+    @price.setter
+    def price(self, newprice):
+        self.__price = newprice
+
+    @property
+    def priority(self):
+        return self.__priority
+
+    @property
+    def transport_type(self):
+        return self.__transport_type
+    @transport_type.setter
+    def transport_type(self, new):
+        self.__transport_type = new
+
+    @property
+    def status(self):
+        return self.__status
+    @status.setter
+    def status(self, newstatus):
+        self.__status = newstatus
+#Route.py
+# Класс "Маршруты"
+class Route:
+    def __init__(self, start_city, end_city, distance, transport, highway=False, highway_coef=1):
+        self.__start_city = start_city                             # Начальный город
+        self.__end_city = end_city                                 # Конечный город
+        self.__distance = distance                                 # Длина маршрута
+        self.__transport = transport                               # Используемый транспорт
+        self.__highway = highway                                   # Наличие скоростной магистрали
+        self.__highway_coef = highway_coef                         # Коэффициент ускорения на скоростной магистрали
+
+    @property
+    def start_city(self):
+        return self.__start_city
+
+    @property
+    def end_city(self):
+        return self.__end_city
+
+    @property
+    def distance(self):
+        return self.__distance
+
+    @property
+    def transport(self):
+        return self.__transport
+
+    @property
+    def highway(self):
+        return self.__highway
+
+    @property
+    def highway_coef(self):
+        return self.__highway_coef
+#Transagency.py
+from City import City
+from Order import Order
+from Route import Route
+from Transport import Transport
+from Transport import Airplane
+from Transport import Train
+from Transport import Car
+import random
+from random import choices
+
+
+class Transagency:
+    def __init__(self):
+        self.__cities = []                                   # Список городов
+        self.__transports = []                               # Список транспорта
+        self.__routes = []                                   # Список маршрутов
+        self.__orders = []                                   # Список заказов
+
+        self.__time_to_execute = [0,0,0,0,0,0,0]             # Время доставки
+        self.__total_time_to_execute = 0                     # Общее время доставки
+
+        self.__income = [0,0,0,0,0,0,0]                      # Доход
+        self.__total_income = 0                              # Общий доход
+
+        self.__crashes_lost = [0,0,0,0,0,0,0]                # Потери из-за аварий
+        self.__total_crashes_lost = 0                        # Общие потери из-за аварий
+
+        self.__total_weather_losses = 0                      # Общие потери из-за погоды
+
+        self.__highway_income = 0                            # Доход от скоростных магистралей
+        self.__road_income = 0                               # Доход от обычной дороги
+
+    def add_city(self, city):
+        self.__cities.append(city)
+
+    def add_transport(self, transport):
+        self.__transports.append(transport)
+
+    def add_route(self, route):
+        self.__routes.append(route)
+
+    @property
+    def cities(self):
+        return self.__cities
+
+    @property
+    def transports(self):
+        return self.__transports
+
+    @property
+    def routes(self):
+        return self.__routes
+
+    @property
+    def time_to_execute(self):
+        return self.__time_to_execute
+
+    @property
+    def highway_income(self):
+        return self.__highway_income
+
+    @property
+    def road_income(self):
+        return self.__road_income
+
+    @property
+    def orders(self):
+        return self.__orders
+    @property
+    def total_weather_losses(self):
+        return self.__total_weather_losses
+
+    @property
+    def income(self):
+        return self.__income
+    @income.setter
+    def income(self, add_income):
+        self.__income = add_income
+
+    @property
+    def total_income(self):
+        return self.__total_income
+    @total_income.setter
+    def total_income(self, income):
+        self.__total_income = income
+
+    @property
+    def total_time_to_execute(self):
+        return self.__total_time_to_execute
+    @total_time_to_execute.setter
+    def total_time_to_execute(self, time):
+        self.__total_time_to_execute = time
+
+    @property
+    def crashes_lost(self):
+        return self.__crashes_lost
+    @crashes_lost.setter
+    def crashes_lost(self, lost):
+        self.__crashes_lost = lost
+
+    @property
+    def total_crashes_lost(self):
+        return self.__total_crashes_lost
+    @total_crashes_lost.setter
+    def total_crashes_lost(self, losty):
+        self.__total_crashes_lost = losty
+
+    def generate_orders(self):
+        for i in range(random.randint(10,15)):
+            start_city = random.choice(self.cities)
+            end_city = random.choice(self.cities)
+            while start_city == end_city:
+                end_city = random.choice(self.cities)
+            weight = random.randint(1, 100)
+            priority = random.choice(["Скорость", "Цена", None])
+            order = Order(i+1, start_city, end_city, weight, 0, priority)
+            self.__orders.append(order)
+
+
+    def poick_route(self, order):
+        for iroute in self.routes:
+            if order.start_city.name == iroute.start_city and order.end_city.name == iroute.end_city:
+                route = iroute
+                return route
+
+    def find_transport_vehicle(self):
+        for order in self.orders:
+            if order.start_city.size == "Большой" and order.end_city.size == "Большой":
+                if order.priority == "Скорость":
+                    order.route = self.poick_route(order)
+                    order.transport_type = "самолёт"
+
+                elif order.priority == None:
+                    order.route = self.poick_route(order)
+                    order.transport_type = "авто"
+
+                elif order.priority == "Цена":
+                    order.route = self.poick_route(order)
+                    order.transport_type = "поезд"
+
+            elif order.start_city.size == "Маленький" or order.start_city.size == "Маленький":
+                order.route = self.poick_route(order)
+                order.transport_type = "авто"
+            else:
+                if order.priority == "Скорость":
+                    order.route = self.poick_route(order)
+                    order.transport_type = "авто"
+
+                elif (order.priority == None or order.priority == "Цена"):
+                    order.route = self.poick_route(order)
+                    order.transport_type = "поезд"
+
+
+    def order_completer(self, order, time_to):
+        order.status = "Выполнен"
+
+
+    def time_price_count(self, type, distance, coef):
+        speed = None
+        for transport in self.transports:
+            if transport.transport_type == type:
+                speed = transport.speed
+        time = distance / speed * coef
+        return time
+
+    def price_count(self, distance, type):
+        ton_km = 0
+        for transport in self.transports:
+            if transport.transport_type == type:
+                ton_km = transport.tonno_kilometer
+        price = distance * ton_km
+        return price
+
+    def accident(self, order_route_highway ,type):
+        for transport in self.transports:
+            if transport.transport_type == type:
+                accident_coef = transport.accident_probability
+        if order_route_highway == True:
+            accident_coef = accident_coef * 0.5
+        else:
+            accident_coef = accident_coef
+        population = ["Авария", "Нет аварии"]
+        second_coef = 1 - accident_coef
+        weights = [accident_coef, second_coef]
+        choice = choices(population, weights)
+        return choice
+
+
+    def process_orders(self):
+        for order in self.orders:
+            order.price = self.price_count(order.route.distance, order.transport_type)
+            order.delivery_time = self.time_price_count(order.transport_type, order.route.distance, order.route.highway_coef)
+            choise = self.accident(order.route.highway, order.transport_type)
+            if order.transport_type == "авто" or order.transport_type == "поезд":
+                if choise[0] == "Нет аварии":
+                    order.status = "В доставке"
+                    self.order_completer(order, order.delivery_time)
+                else:
+                    order.status = "Авария"
+            elif order.transport_type == "самолёт":
+                if order.start_city.weather[0] == "хорошая" and order.end_city.weather[0] == "хорошая":
+                    if choise[0] == "Нет аварии":
+                        order.status = "В доставке"
+                        self.order_completer(order, order.delivery_time)
+                    else:
+                        order.status = "Авария"
+                else:
+                    order.status = "Задержан"
+
+
+    def removing_orders(self):
+        for order in self.orders:
+            if order.status == "Выполнен":
+                self.total_income += order.price
+                self.avarage_time()
+                if order.transport_type == "самолёт":
+                    self.income[0] += order.price
+                if order.transport_type == "поезд":
+                    self.income[1] += order.price
+                if order.transport_type == "авто":
+                    self.income[2] += order.price
+                if order.start_city.name == "Москва":
+                    self.income[3] += order.price
+                if order.start_city.name == "Новосибирск":
+                    self.income[4] += order.price
+                if order.start_city.name == "Барнаул":
+                    self.income[5] += order.price
+                if order.start_city.name == "Заринск":
+                    self.income[6] += order.price
+                if order.route.highway == True:
+                    self.__highway_income += order.price
+                else:
+                    self.__road_income += order.price
+                self.orders.remove(order)
+            elif order.status == "Авария":
+                self.__total_crashes_lost += order.price * 2
+                if order.transport_type == "самолёт":
+                    self.crashes_lost[0] += order.price * 2
+                if order.transport_type == "поезд":
+                    self.crashes_lost[1] += order.price * 2
+                if order.transport_type == "авто":
+                    self.crashes_lost[2] += order.price * 2
+                if order.start_city.name == "Москва":
+                    self.crashes_lost[3] += order.price * 2
+                if order.start_city.name == "Новосибирск":
+                    self.crashes_lost[4] += order.price * 2
+                if order.start_city.name == "Барнаул":
+                    self.crashes_lost[5] += order.price * 2
+                if order.start_city.name == "Заринск":
+                    self.crashes_lost[6] += order.price * 2
+                self.orders.remove(order)
+            elif order.status == "Задержан":
+                self.__total_weather_losses += order.price // 2
+                order.status = "В обработкке"
+
+    def avarage_time(self):
+        count, count1, count2, count3, count4, count5, count6, count7 = 0, 0, 0, 0, 0, 0, 0, 0
+        summa, summa1, summa2, summa3, summa4, summa5, summa6, summa7 = 0, 0, 0, 0, 0, 0, 0, 0
+        for order in self.orders:
+            count += 1
+            summa += order.delivery_time
+            if order.transport_type == "самолёт":
+                count1 += 1
+                summa1 += order.delivery_time
+                avar_time1 = int(summa1) // count1
+                self.__time_to_execute[0] = avar_time1
+            if order.transport_type == "поезд":
+                count2 += 1
+                summa2 += order.delivery_time
+                avar_time2 = int(summa2) // count2
+                self.__time_to_execute[1] = avar_time2
+            if order.transport_type == "авто":
+                count3 += 1
+                summa3 += order.delivery_time
+                avar_time3 = int(summa3) // count3
+                self.__time_to_execute[2] = avar_time3
+            if order.start_city.name == "Москва":
+                count4 += 1
+                summa4 += order.delivery_time
+                avar_time4 = int(summa4) // count4
+                self.__time_to_execute[3] = avar_time4
+            if order.start_city.name == "Новосибирск":
+                count5 += 1
+                summa5 += order.delivery_time
+                avar_time5 = int(summa5) // count5
+                self.__time_to_execute[4] = avar_time5
+            if order.start_city.name == "Барнаул":
+                count6 += 1
+                summa6 += order.delivery_time
+                avar_time6 = int(summa6) // count6
+                self.__time_to_execute[5] = avar_time6
+            if order.start_city.name == "Заринск":
+                count7 += 1
+                summa7 += order.delivery_time
+                avar_time7 = int(summa7) // count7
+                self.__time_to_execute[6] = avar_time7
+        avar_time = int(summa) // count
+        self.__total_time_to_execute = avar_time
+
+
+
+Moscow = City("Москва","Большой")
+Novosibirsk = City("Новосибирск","Большой")
+Barnaul = City("Барнаул","Средний")
+Zarinsk = City("Заринск","Маленький")
+
+
+transagency = Transagency()
+
+transagency.add_transport(Airplane("самолёт", 500, 2, 0.001))
+transagency.add_transport(Train("поезд", 60, 0.5, 0.025))
+transagency.add_transport(Car("авто", 100, 1, 0.05))
+
+transagency.add_route(Route("Москва", "Новосибирск", 634, "самолёт"))
+transagency.add_route(Route("Новосибирск", "Москва", 634, "самолёт"))
+transagency.add_route(Route("Москва", "Новосибирск", 634, "авто", True, 1.4))
+transagency.add_route(Route("Новосибирск", "Москва", 634, "авто", True, 1.4))
+transagency.add_route(Route("Москва", "Новосибирск", 634, "поезд"))
+transagency.add_route(Route("Новосибирск", "Москва", 634, "поезд"))
+
+transagency.add_route(Route("Москва", "Барнаул", 402, "поезд"))
+transagency.add_route(Route("Барнаул", "Москва", 402, "поезд"))
+transagency.add_route(Route("Москва", "Барнаул", 402, "авто"))
+transagency.add_route(Route("Барнаул", "Москва", 402, "авто"))
+
+transagency.add_route(Route("Новосибирск", "Барнаул", 896, "поезд"))
+transagency.add_route(Route("Барнаул", "Новосибирск", 896, "поезд"))
+transagency.add_route(Route("Новосибирск", "Барнаул", 896, "авто"))
+transagency.add_route(Route("Барнаул", "Новосибирск", 896, "авто"))
+
+transagency.add_route(Route("Заринск", "Барнаул", 959, "авто"))
+transagency.add_route(Route("Барнаул", "Заринск", 959, "авто"))
+transagency.add_route(Route("Заринск", "Москва", 610, "авто", True, 1.4))
+transagency.add_route(Route("Москва", "Заринск", 610, "авто", True, 1.4))
+transagency.add_route(Route("Заринск", "Новосибирск", 260, "авто"))
+transagency.add_route(Route("Новосибирск", "Заринск", 260, "авто"))
+
+transagency.add_city(City("Москва","Большой"))
+transagency.add_city(City("Новосибирск","Большой"))
+transagency.add_city(City("Барнаул","Средний"))
+transagency.add_city(City("Заринск","Маленький"))
+
